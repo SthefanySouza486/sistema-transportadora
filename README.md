@@ -18,7 +18,7 @@ O projeto adota uma arquitetura em camadas (cliente-servidor), utilizando as seg
 * **Maven** (Gerenciador de dependências)
 
 ### Banco de Dados
-* **PostgreSQL** (SGBD Relacional)
+* **MySql** 
 
 ### Frontend *(Em breve)*
 * **Angular** (Framework TypeScript)
