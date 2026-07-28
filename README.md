@@ -25,7 +25,7 @@ O projeto adota uma arquitetura em camadas (cliente-servidor), utilizando as seg
 ### Banco de Dados
 * **MySql** 
 
-### Frontend *(Em breve)*
+### Frontend 
 * **Angular** (Framework TypeScript)
 * **HTML5 / CSS3**
 
