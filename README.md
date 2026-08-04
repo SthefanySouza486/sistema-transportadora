@@ -4,6 +4,11 @@
 >
 > *Aviso: Este repositório contém o código-fonte de um projeto acadêmico que está atualmente em fase de desenvolvimento. Funcionalidades podem estar incompletas ou sofrer alterações.*
 
+## 🔗 Repositório Relacionado
+Este projeto contempla apenas a API REST (Back-end) do sistema. A interface de usuário foi desenvolvida separadamente:
+* **Acessar o repositório do Front-end (Angular) https://github.com/SthefanySouza486/sistema-transportadora-front.git**
+
+  
 ## 📖 Sobre o Projeto
 Este é um sistema web desenvolvido para digitalizar e otimizar a gestão financeira e logística de uma transportadora. O objetivo principal é substituir os controles manuais em papel por uma plataforma centralizada que gerencia motoristas, veículos, viagens, despesas de rota e pagamentos de comissões.
 
@@ -18,9 +23,9 @@ O projeto adota uma arquitetura em camadas (cliente-servidor), utilizando as seg
 * **Maven** (Gerenciador de dependências)
 
 ### Banco de Dados
-* **PostgreSQL** (SGBD Relacional)
+* **MySql** 
 
-### Frontend *(Em breve)*
+### Frontend 
 * **Angular** (Framework TypeScript)
 * **HTML5 / CSS3**
 
