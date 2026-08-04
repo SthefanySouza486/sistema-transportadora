@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
@@ -14,21 +12,28 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "motorista")
 public class Motorista {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column("nome")
+    @Column(name = "nome")
     private String nome;
 
-    @Column("telefone")
+    @Column(name = "telefone")
     private String telefone;
 
-    @Column("senha")
+    @Column(name = "senha")
     private String senha;
 
-    @Column("comissao")
+    @Column(name = "email", unique = true)
+    private String email;
+
+    @Column(name = "comissao")
     private BigDecimal comissao;
+
+    private String perfil = "MOTORISTA";
 }

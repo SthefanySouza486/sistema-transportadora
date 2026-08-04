@@ -1,6 +1,5 @@
 package edu.tcc.backend.dto.viagem;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +15,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ViagemRequest {
 
-    @NotBlank(message = "O id do motorista é obrigatório.")
+    @NotNull(message = "O id do motorista é obrigatório.")
     private Long motoristaId;
 
-    @NotBlank(message = "O id do veiculo é obrigatório.")
+    @NotNull(message = "O id do veiculo é obrigatório.")
     private Long veiculoId;
 
     @NotNull(message = "A data que foi realizada a viagem é obrigatório.")

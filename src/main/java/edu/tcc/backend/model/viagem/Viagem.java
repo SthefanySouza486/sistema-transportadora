@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,42 +13,45 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "viagem")
 public class Viagem {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column("motorista_id")
+    @Column(name = "motorista_id")
     private Long motoristaId;
 
-    @Column("veiculo_id")
+    @Column(name = "veiculo_id")
     private Long veiculoId;
 
-    @Column("data_viagem")
+    @Column(name = "data_viagem")
     private LocalDate dataViagem;
 
-    @Column("origem")
+    @Column(name = "origem")
     private String origem;
 
-    @Column("destino")
+    @Column(name = "destino")
     private String destino;
 
-    @Column("dinheiro_entregue")
+    @Column(name = "dinheiro_entregue")
     private BigDecimal dinheiroEntregue;
 
-    @Column("peso_tonelada")
+    @Column(name = "peso_tonelada")
     private BigDecimal pesoTonelada;
 
-    @Column("valor_por_tonelada")
+    @Column(name = "valor_por_tonelada")
     private BigDecimal valorTonelada;
 
-    @Column("valor_total_frete")
+    @Column(name = "valor_total_frete")
     private BigDecimal valorFrete;
 
-    @Column("valor_comissao")
+    @Column(name = "valor_comissao")
     private BigDecimal valorComissao;
 
-    @Column("status_2")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_2")
     private StatusViagem statusViagem;
 }

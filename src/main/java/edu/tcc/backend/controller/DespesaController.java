@@ -28,4 +28,25 @@ public class DespesaController {
     public ResponseEntity<List<DespesaResponse>> listarPorViagem(@PathVariable Long viagemId) {
         return ResponseEntity.ok(service.listarPorViagem(viagemId));
     }
+
+    @GetMapping
+    public ResponseEntity<List<DespesaResponse>> listarTodos() {
+        return ResponseEntity.ok(service.listarTodos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DespesaResponse> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DespesaResponse> atualizar(@PathVariable Long id, @Valid @RequestBody DespesaRequest request) {
+        return ResponseEntity.ok(service.atualizar(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        service.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
 }

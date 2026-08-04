@@ -20,6 +20,9 @@ public class VeiculoService {
 
     @Transactional
     public VeiculoResponse cadastrar(VeiculoRequest request) {
+        if (repository.existsByPlaca(request.getPlaca())) {
+            throw new IllegalArgumentException("Erro: Já existe um veículo cadastrado com esta placa.");
+        }
         Veiculo veiculo = mapper.toEntity(request);
         Veiculo veiculoSalvo = repository.save(veiculo);
         return mapper.toResponse(veiculoSalvo);
@@ -28,5 +31,34 @@ public class VeiculoService {
     public List<VeiculoResponse> listarTodos() {
         List<Veiculo> veiculos = (List<Veiculo>) repository.findAll();
         return mapper.toResponseList(veiculos);
+    }
+
+    public VeiculoResponse buscarPorId(Long id) {
+        Veiculo veiculo = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Veículo não encontrado."));
+        return mapper.toResponse(veiculo);
+    }
+
+    @Transactional
+    public VeiculoResponse atualizar(Long id, VeiculoRequest request) {
+        Veiculo veiculo = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Veículo não encontrado."));
+        
+        if (!veiculo.getPlaca().equalsIgnoreCase(request.getPlaca()) && 
+            repository.existsByPlaca(request.getPlaca())) {
+            throw new IllegalArgumentException("Erro: Já existe um veículo cadastrado com esta placa.");
+        }
+        
+        veiculo.setPlaca(request.getPlaca());
+        veiculo.setTipo(request.getTipo());
+        
+        return mapper.toResponse(repository.save(veiculo));
+    }
+
+    @Transactional
+    public void excluir(Long id) {
+        Veiculo veiculo = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Veículo não encontrado."));
+        repository.delete(veiculo);
     }
 }

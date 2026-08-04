@@ -4,24 +4,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.*;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "veiculo")
 public class Veiculo {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column("placa")
+    @Column(name = "placa")
     private String placa;
 
-    @Column("tipo")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo")
     private TipoVeiculo tipo;
 
 }

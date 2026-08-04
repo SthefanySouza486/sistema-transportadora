@@ -28,4 +28,20 @@ public class VeiculoController {
     public ResponseEntity<List<VeiculoResponse>> listarTodos() {
         return ResponseEntity.ok(service.listarTodos());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<VeiculoResponse> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<VeiculoResponse> atualizar(@PathVariable Long id, @Valid @RequestBody VeiculoRequest request) {
+        return ResponseEntity.ok(service.atualizar(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        service.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
 }

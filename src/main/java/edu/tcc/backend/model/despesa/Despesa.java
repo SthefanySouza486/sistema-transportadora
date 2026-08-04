@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,27 +13,30 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "despesas")
 public class Despesa {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column("viagem_id")
+    @Column(name = "viagem_id")
     private Long viagemId;
 
-    @Column("categoria")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria")
     private CategoriaDespesa categoria;
 
-    @Column("data_despesa")
+    @Column(name = "data_despesa")
     private LocalDate dataDespesa;
 
-    @Column("descricao")
+    @Column(name = "descricao")
     private String descricao;
 
-    @Column("valor")
+    @Column(name = "valor")
     private BigDecimal valor;
 
-    @Column("foto_comprovante")
+    @Column(name = "foto_comprovante")
     private String fotoComprovante;
 }
