@@ -20,7 +20,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> fazerLogin(@RequestBody LoginRequest request) {
-        if ("gestor@silvasouza.com".equals(request.getUsuario()) && "admin123".equals(request.getSenha())) {
+        String usuario = request.getUsuario() != null ? request.getUsuario().trim() : "";
+        String senha = request.getSenha() != null ? request.getSenha().trim() : "";
+
+        if ("gestor@silvasouza.com".equals(usuario) && "admin123".equals(senha)) {
             LoginResponse cracha = new LoginResponse("token-gestor", "GESTOR", 0L, "Administrador Geral");
             return ResponseEntity.ok(cracha);
         }
