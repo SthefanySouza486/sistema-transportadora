@@ -3,9 +3,12 @@ package edu.tcc.backend.service;
 import edu.tcc.backend.dto.viagem.ViagemMapper;
 import edu.tcc.backend.dto.viagem.ViagemRequest;
 import edu.tcc.backend.dto.viagem.ViagemResponse;
+import edu.tcc.backend.dto.viagem.ViagemStatusRequest;
+import edu.tcc.backend.model.despesa.Despesa;
 import edu.tcc.backend.model.motorista.Motorista;
 import edu.tcc.backend.model.viagem.StatusViagem;
 import edu.tcc.backend.model.viagem.Viagem;
+import edu.tcc.backend.repository.DespesaRepository;
 import edu.tcc.backend.repository.MotoristaRepository;
 import edu.tcc.backend.repository.ViagemRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -23,6 +27,7 @@ public class ViagemService {
 
     private final ViagemRepository repository;
     private final MotoristaRepository motoristaRepository;
+    private final DespesaRepository despesaRepository;
     private final ViagemMapper mapper;
 
     @Transactional
@@ -85,12 +90,53 @@ public class ViagemService {
     }
 
     @Transactional
+    public ViagemResponse atualizarStatus(Long id, ViagemStatusRequest request) {
+        Viagem viagem = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Viagem não encontrada."));
+
+        viagem.setStatusViagem(request.getStatusViagem());
+
+        Viagem viagemSalva = repository.save(viagem);
+        return  mapper.toResponse(viagemSalva);
+    }
+
+    public List<ViagemResponse> listarPorMotorista(Long motoristaId) {
+        List<Viagem> viagens = repository.findByMotoristaId(motoristaId);
+        return mapper.toResponseList(viagens);
+    }
+
+    public List<ViagemResponse> listarPorDataViagem (LocalDate dataViagem) {
+        List<Viagem> viagemData = repository.findByDataViagem(dataViagem);
+        return mapper.toResponseList(viagemData);
+    }
+
+    public List<ViagemResponse> listarPorStatusViagem (StatusViagem statusViagem) {
+        List<Viagem> viagemStatus = repository.findByStatusViagem(statusViagem);
+        return mapper.toResponseList(viagemStatus);
+    }
+
+    public List<ViagemResponse> listarPorVeiculoId (Long veiculoId) {
+        List<Viagem> veiculo = repository.findByVeiculoId(veiculoId);
+        return mapper.toResponseList(veiculo);
+    }
+
+    public List<ViagemResponse> listarPorMotoristaIdEStatusViagem (Long motoristaId, StatusViagem statusViagem) {
+        List<Viagem> motoristaStatus = repository.findByMotoristaIdAndStatusViagem(motoristaId, statusViagem);
+        return  mapper.toResponseList(motoristaStatus); 
+    }
+
+    @Transactional
     public void excluir(Long id) {
         Viagem viagem = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Viagem não encontrada."));
         
         if (StatusViagem.FINALIZADA.equals(viagem.getStatusViagem())) {
             throw new IllegalArgumentException("Não é possível excluir uma viagem já concluída.");
+        }
+
+        List<Despesa> despesas = despesaRepository.findByViagemId(id);
+        if (despesas != null && !despesas.isEmpty()) {
+            despesaRepository.deleteAll(despesas);
         }
         
         repository.delete(viagem);

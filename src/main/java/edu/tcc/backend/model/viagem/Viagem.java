@@ -39,7 +39,7 @@ public class Viagem {
     @Column(name = "dinheiro_entregue")
     private BigDecimal dinheiroEntregue;
 
-    @Column(name = "peso_tonelada")
+    @Column(name = "peso_tonelada", precision = 38, scale = 3)
     private BigDecimal pesoTonelada;
 
     @Column(name = "valor_por_tonelada")

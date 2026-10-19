@@ -17,6 +17,7 @@ public class ViagemResponse {
 
     private Long id;
     private Long motoristaId;
+    private String nomeMotorista;
     private Long veiculoId;
     private LocalDate dataViagem;
     private String origem;
