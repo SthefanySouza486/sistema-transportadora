@@ -1,0 +1,2 @@
+ALTER TABLE veiculo ADD COLUMN placa_carreta1 VARCHAR(255);
+ALTER TABLE veiculo ADD COLUMN placa_carreta2 VARCHAR(255);

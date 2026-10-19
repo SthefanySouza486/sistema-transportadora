@@ -21,8 +21,10 @@ public class Veiculo {
     @Column(name = "placa")
     private String placa;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo")
-    private TipoVeiculo tipo;
 
+    @Column(name = "placa_carreta1")
+    private String placaCarreta1;
+
+    @Column(name = "placa_carreta2")
+    private String placaCarreta2;
 }

@@ -1,0 +1,1 @@
+ALTER TABLE veiculo DROP COLUMN tipo;

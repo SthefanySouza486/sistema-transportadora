@@ -14,7 +14,8 @@ public class VeiculoMapper {
     public Veiculo toEntity(VeiculoRequest request) {
         return Veiculo.builder()
                 .placa(request.getPlaca())
-                .tipo(request.getTipo())
+                .placaCarreta1(request.getPlacaCarreta1())
+                .placaCarreta2(request.getPlacaCarreta2())
                 .build();
     }
 
@@ -22,7 +23,8 @@ public class VeiculoMapper {
         return VeiculoResponse.builder()
                 .id(veiculo.getId())
                 .placa(veiculo.getPlaca())
-                .tipo(veiculo.getTipo())
+                .placaCarreta1(veiculo.getPlacaCarreta1())
+                .placaCarreta2(veiculo.getPlacaCarreta2())
                 .build();
     }
 

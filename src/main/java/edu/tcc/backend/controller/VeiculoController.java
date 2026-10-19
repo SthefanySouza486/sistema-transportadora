@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -32,6 +33,11 @@ public class VeiculoController {
     @GetMapping("/{id}")
     public ResponseEntity<VeiculoResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
+    @GetMapping("/placa/{placa}")
+    public ResponseEntity<Optional<VeiculoResponse>> findByPlaca (@PathVariable String placa) {
+        return ResponseEntity.ok(service.buscarPorPlaca(placa));
     }
 
     @PutMapping("/{id}")

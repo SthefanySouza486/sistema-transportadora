@@ -1,6 +1,5 @@
 package edu.tcc.backend.dto.veiculo;
 
-import edu.tcc.backend.model.veiculo.TipoVeiculo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +13,6 @@ public class VeiculoResponse {
 
     private Long id;
     private String placa;
-    private TipoVeiculo tipo;
+    private String placaCarreta1;
+    private String placaCarreta2;
 }

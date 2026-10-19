@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class VeiculoService {
     }
 
     public List<VeiculoResponse> listarTodos() {
-        List<Veiculo> veiculos = (List<Veiculo>) repository.findAll();
+        List<Veiculo> veiculos = repository.findAll();
         return mapper.toResponseList(veiculos);
     }
 
@@ -38,6 +39,11 @@ public class VeiculoService {
                 .orElseThrow(() -> new IllegalArgumentException("Veículo não encontrado."));
         return mapper.toResponse(veiculo);
     }
+
+    public Optional<VeiculoResponse> buscarPorPlaca(String placa) {
+        return repository.findByPlaca(placa).map(mapper::toResponse);
+    }
+
 
     @Transactional
     public VeiculoResponse atualizar(Long id, VeiculoRequest request) {
@@ -50,7 +56,8 @@ public class VeiculoService {
         }
         
         veiculo.setPlaca(request.getPlaca());
-        veiculo.setTipo(request.getTipo());
+        veiculo.setPlacaCarreta1(request.getPlacaCarreta1());
+        veiculo.setPlacaCarreta2(request.getPlacaCarreta2());
         
         return mapper.toResponse(repository.save(veiculo));
     }
