@@ -15,6 +15,5 @@ public class GestorRequest {
     @NotBlank(message = "O nome do gestor é obrigatório.")
     private String nome;
 
-    @NotBlank(message = "A senha é obrigatório.")
     private String senha;
 }

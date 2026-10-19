@@ -20,7 +20,6 @@ public class MotoristaRequest {
 
     private String telefone;
 
-    @NotBlank(message = "A senha é obrigatório.")
     private String senha;
 
     @NotNull(message = "A comissão do motorista é obrigatório.")

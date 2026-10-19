@@ -1,58 +1,70 @@
 package edu.tcc.backend.controller;
 
-import edu.tcc.backend.dto.login.LoginRequest;
-import edu.tcc.backend.dto.login.LoginResponse;
+import edu.tcc.backend.model.gestor.Gestor;
 import edu.tcc.backend.model.motorista.Motorista;
+import edu.tcc.backend.repository.GestorRepository;
 import edu.tcc.backend.repository.MotoristaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
-    private MotoristaRepository repository;
+    private MotoristaRepository motoristaRepository;
+
+    @Autowired
+    private GestorRepository gestorRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<?> fazerLogin(@RequestBody LoginRequest request) {
-        try {
-            String usuario = request.getUsuario() != null ? request.getUsuario().trim() : "";
-            String senha = request.getSenha() != null ? request.getSenha().trim() : "";
+    public ResponseEntity<?> fazerLogin(@RequestBody Map<String, String> credentials) {
+        String usuarioDigitado = credentials.get("usuario") != null ? credentials.get("usuario").trim() : "";
+        String senhaDigitada = credentials.get("senha") != null ? credentials.get("senha").trim() : "";
 
-            System.out.println("Tentativa de login: " + usuario);
-
-            if ("gestor@silvasouza.com".equals(usuario) && "admin123".equals(senha)) {
-                System.out.println("Login do gestor aprovado!");
-                LoginResponse cracha = new LoginResponse("token-gestor", "GESTOR", 0L, "Administrador Geral");
-                return ResponseEntity.ok(cracha);
-            }
-
-            System.out.println("Buscando usuario no banco: " + usuario);
-            Optional<Motorista> motoristaBuscado = repository.findByEmail(usuario);
-
-            if (motoristaBuscado.isPresent()) {
-                Motorista motorista = motoristaBuscado.get();
-
-                if (motorista.getSenha() != null && motorista.getSenha().equals(senha)) {
-                    LoginResponse cracha = new LoginResponse(
-                            "token-motorista-" + motorista.getId(),
-                            motorista.getPerfil(),
-                            motorista.getId(),
-                            motorista.getNome()
-                    );
-                    return ResponseEntity.ok(cracha);
-                }
-            }
-
-            return ResponseEntity.status(401).body("{\"erro\": \"E-mail ou senha inválidos\"}");
-        } catch (Exception e) {
-            System.err.println("Erro interno durante o login: " + e.getMessage());
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("{\"erro\": \"Erro interno no servidor: " + e.getMessage() + "\"}");
+        if (usuarioDigitado.isEmpty() || senhaDigitada.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Usuário e senha são obrigatórios."));
         }
+
+        Optional<Gestor> gestor = gestorRepository.findByNomeIgnoreCase(usuarioDigitado);
+
+        if (gestor.isPresent() && gestor.get().getSenha().equals(senhaDigitada)) {
+            System.out.println("Login do Gestor aprovado: " + gestor.get().getNome());
+
+            return ResponseEntity.ok(Map.of(
+                    "mensagem", "Login aprovado",
+                    "perfil", "GESTOR",
+                    "nome", gestor.get().getNome(),
+                    "id", gestor.get().getId(),
+                    "token", "token-fake-gestor"
+            ));
+        }
+
+        Optional<Motorista> motorista = motoristaRepository.findByNomeIgnoreCase(usuarioDigitado);
+        if (motorista.isEmpty()) {
+            motorista = motoristaRepository.findByEmailIgnoreCase(usuarioDigitado);
+        }
+
+        if (motorista.isPresent() && motorista.get().getSenha().equals(senhaDigitada)) {
+            System.out.println("Login do Motorista aprovado: " + motorista.get().getNome());
+
+            return ResponseEntity.ok(Map.of(
+                    "mensagem", "Login aprovado",
+                    "perfil", "MOTORISTA",
+                    "nome", motorista.get().getNome(),
+                    "id", motorista.get().getId(),
+                    "token", "token-fake-motorista"
+            ));
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                "message", "Acesso Negado: Usuário ou senha incorretos."
+        ));
     }
 }

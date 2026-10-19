@@ -24,13 +24,18 @@ public class MotoristaService {
             throw new IllegalArgumentException("Erro: Já existe um motorista cadastrado com este nome.");
         }
 
+        if (request.getSenha() == null || request.getSenha().trim().isEmpty()) {
+            throw new IllegalArgumentException("Erro: A senha é obrigatória para novos cadastros.");
+        }
+
         Motorista motorista = mapper.toEntity(request);
+        motorista.setPerfil("MOTORISTA");
         Motorista motoristaSalvo = repository.save(motorista);
         return mapper.toResponse(motoristaSalvo);
     }
 
     public List<MotoristaResponse> listarTodos() {
-        List<Motorista> motoristas = (List<Motorista>) repository.findAll();
+        List<Motorista> motoristas = repository.findAll();
         return mapper.toResponseList(motoristas);
     }
 
@@ -54,7 +59,15 @@ public class MotoristaService {
         motorista.setTelefone(request.getTelefone());
         motorista.setComissao(request.getComissao());
 
-        return mapper.toResponse(repository.save(motorista));
+        if (request.getSenha() != null && !request.getSenha().trim().isEmpty()) {
+            motorista.setSenha(request.getSenha().trim());
+        }
+
+        if (motorista.getPerfil() == null) {
+            motorista.setPerfil("MOTORISTA");
+        }
+        Motorista atualizado = repository.save(motorista);
+        return mapper.toResponse(atualizado);
     }
 
     @Transactional

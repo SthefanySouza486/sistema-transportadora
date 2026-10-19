@@ -20,6 +20,14 @@ public class GestorService {
 
     @Transactional
     public GestorResponse cadastrar(GestorRequest request) {
+        if (repository.existsByNomeIgnoreCase(request.getNome())) {
+            throw new IllegalArgumentException("Erro: Já existe um gestor cadastrado com esse nome.");
+        }
+
+        if (request.getSenha() == null || request.getSenha().trim().isEmpty()) {
+            throw new IllegalArgumentException("Erro: A senha é obrigatória para novos cadastros.");
+        }
+
         Gestor gestor = mapper.toEntity(request);
         Gestor gestorSalvo = repository.save(gestor);
 
@@ -27,8 +35,35 @@ public class GestorService {
     }
 
     public List<GestorResponse> listarTodos() {
-        List<Gestor> gestores = (List<Gestor>) repository.findAll();
-
+        List<Gestor> gestores = repository.findAll();
         return mapper.toResponseList(gestores);
+    }
+
+    @Transactional
+    public GestorResponse atualizar(Long id, GestorRequest request) {
+        Gestor gestor = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Gestor não encontrado"));
+
+        gestor.setNome(request.getNome());
+
+        if (request.getSenha() != null && !request.getSenha().trim().isEmpty()) {
+            gestor.setSenha(request.getSenha().trim());
+        }
+
+        Gestor salvo = repository.save(gestor);
+        return mapper.toResponse(salvo);
+    }
+
+    public GestorResponse buscarPorId(Long id) {
+        Gestor gestor = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Gestor não encontrado."));
+        return mapper.toResponse(gestor);
+    }
+
+    @Transactional
+    public void excluir(Long id) {
+        Gestor gestor = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Gestor não encontrado."));
+        repository.delete(gestor);
     }
 }
