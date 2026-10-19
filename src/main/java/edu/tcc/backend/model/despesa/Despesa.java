@@ -37,6 +37,6 @@ public class Despesa {
     @Column(name = "valor")
     private BigDecimal valor;
 
-    @Column(name = "foto_comprovante")
+    @Column(name = "foto_comprovante", columnDefinition = "TEXT")
     private String fotoComprovante;
 }

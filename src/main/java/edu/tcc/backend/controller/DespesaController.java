@@ -2,6 +2,7 @@ package edu.tcc.backend.controller;
 
 import edu.tcc.backend.dto.despesa.DespesaRequest;
 import edu.tcc.backend.dto.despesa.DespesaResponse;
+import edu.tcc.backend.model.despesa.CategoriaDespesa;
 import edu.tcc.backend.service.DespesaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,24 @@ public class DespesaController {
     }
 
     @GetMapping("/viagem/{viagemId}")
-    public ResponseEntity<List<DespesaResponse>> listarPorViagem(@PathVariable Long viagemId) {
+    public ResponseEntity<List<DespesaResponse>> findByViagemId(@PathVariable Long viagemId) {
         return ResponseEntity.ok(service.listarPorViagem(viagemId));
+    }
+
+    @GetMapping("/motorista/{motoristaId}")
+    public ResponseEntity<List<DespesaResponse>> listarPorMotorista(@PathVariable Long motoristaId) {
+        return ResponseEntity.ok(service.listarPorMotorista(motoristaId));
+    }
+
+    @GetMapping("/categoria/{categoriaDespesa}")
+    public ResponseEntity<List<DespesaResponse>>  findByCategoria (@PathVariable CategoriaDespesa categoriaDespesa) {
+        return ResponseEntity.ok(service.buscarPorCategoria(categoriaDespesa));
+    }
+
+    @GetMapping("/viagem/{viagemId}/categoria/{categoriaDespesa}")
+    public ResponseEntity<List<DespesaResponse>> findByViagemIdAndCategoria (@PathVariable Long viagemId,
+                                                                             @PathVariable CategoriaDespesa categoriaDespesa) {
+        return ResponseEntity.ok(service.buscarPorViagemIdECategoria(viagemId, categoriaDespesa));
     }
 
     @GetMapping

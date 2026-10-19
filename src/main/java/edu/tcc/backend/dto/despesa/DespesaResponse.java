@@ -28,4 +28,8 @@ public class DespesaResponse {
     private BigDecimal valor;
 
     private String fotoComprovante;
+
+    private Long motoristaId;
+
+    private String nomeMotorista;
 }

@@ -1,0 +1,1 @@
+ALTER TABLE despesas ALTER COLUMN foto_comprovante TYPE TEXT;

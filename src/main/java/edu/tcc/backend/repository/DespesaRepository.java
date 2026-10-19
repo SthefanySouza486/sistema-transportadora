@@ -15,4 +15,6 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
     List<Despesa> findByViagemId (Long viagemId);
 
     List<Despesa> findByViagemIdAndCategoria (Long viagemId, CategoriaDespesa categoriaDespesa);
+
+    List<Despesa> findByViagemIdIn (List<Long> viagemIds);
 }
