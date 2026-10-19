@@ -39,4 +39,7 @@ public class Pagamento {
     @Enumerated(EnumType.STRING)
     @Column(name = "status_2")
     private StatusPagamento statusPagamento;
+
+    @Column(name = "foto_comprovante", columnDefinition = "TEXT")
+    private String fotoComprovante;
 }

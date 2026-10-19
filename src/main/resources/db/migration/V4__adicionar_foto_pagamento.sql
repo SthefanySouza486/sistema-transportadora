@@ -1,0 +1,1 @@
+ALTER TABLE pagamento ADD COLUMN foto_comprovante VARCHAR(255);

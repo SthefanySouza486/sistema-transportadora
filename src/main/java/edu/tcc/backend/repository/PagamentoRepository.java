@@ -18,4 +18,6 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Long> {
     List<Pagamento> findByPeriodoReferencia (LocalDate periodoReferencia);
 
     List<Pagamento> findByMotoristaId(Long motoristaId);
+
+
 }

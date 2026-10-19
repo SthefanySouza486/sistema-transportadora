@@ -17,9 +17,11 @@ public class PagamentoResponse {
 
     private Long id;
     private Long motoristaId;
+    private String nomeMotorista;
     private Long gestorId;
     private LocalDate dataPagamento;
-    private LocalDate periodoReferencia;
+    private String periodoReferencia;
     private BigDecimal valorPago;
     private StatusPagamento statusPagamento;
+    private String fotoComprovante;
 }

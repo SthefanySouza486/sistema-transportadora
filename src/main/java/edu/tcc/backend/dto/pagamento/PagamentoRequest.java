@@ -26,10 +26,12 @@ public class PagamentoRequest {
     private LocalDate dataPagamento;
 
     @NotNull(message = "O periodo de referência é obrigatório.")
-    private LocalDate periodoReferencia;
+    private String periodoReferencia;
 
     @NotNull(message = "O valor que foi pago é obrigatório.")
     private BigDecimal valorPago;
 
     private StatusPagamento statusPagamento;
+
+    private String fotoComprovante;
 }
